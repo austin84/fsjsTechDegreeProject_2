@@ -66,6 +66,51 @@ function appendPageLinks(list) {
   }
 }
 
+/**
+ *  - A function to dynamically create the search bar
+ */
+function appendSearch() {
+  const container = document.querySelector('.page-header');
+  const div = document.createElement('div');
+  div.classList.add('student-search');
+  const input = document.createElement('input');
+  input.placeholder = 'Search for students...';
+  const button = document.createElement('button');
+  button.innerHTML = 'Search';
+
+  div.appendChild(input);
+  div.appendChild(button);
+  container.appendChild(div);
+  inputListen();
+}
+
+// Seearch functionality
+
+function inputListen() {
+  const input = document.querySelector('input');
+
+  input.addEventListener('keyup', (e) => {
+    if (e.keyCode === 13) {
+      for (let i = 0; i < studentItems.length; i++) {
+        const name = studentItems[i].firstChild.nextSibling.textContent;
+        if (name.includes(input.value)) {
+          studentItems[i].style.display = 'block';
+        } else {
+          studentItems[i].style.display = 'none';
+        }
+      }
+    } else if (name.includes(input.value)) {
+      console.log('nailed it');
+    }
+  });
+}
+
+// ! ^^^^^^^   Currently Working Above ^^^^^^^^^^^^^
+
+// ! trying to implement eventlisteners, strugggling to traverse directly to the name, but email should be okay too
+
 // Call Functions to show the paginated list and add the navigation
+
 showPage(studentItems, 1);
 appendPageLinks(studentItems);
+appendSearch();
