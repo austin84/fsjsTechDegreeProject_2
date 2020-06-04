@@ -1,6 +1,7 @@
 // Global Variables
 // List of students pulled from HTML
-const studentItems = document.getElementsByClassName('student-item');
+const studentItemsHTML = document.getElementsByClassName('student-item');
+const studentItems = Array.from(studentItemsHTML);
 
 // Maximum number of students to show on the page at a time
 const toShow = 10;
@@ -67,6 +68,46 @@ function appendPageLinks(list) {
 }
 
 /**
+ *
+ * @param {Array} list - List of Students in the form of an array
+ *  - A function to dynamically create the pagination navigation
+ */
+function upatePageLinks(list) {
+  const div = document.querySelector('.pagination');
+  div.innerHTML = '';
+  console.log(div);
+  const ul = document.createElement('ul');
+  const pagesRequired = Math.ceil(list.length / toShow);
+  const navs = document.getElementsByClassName('nav');
+
+  // Create HTML structure for navigation
+  for (let i = 0; i < pagesRequired; i++) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.classList.add('nav');
+    a.innerHTML = `${i + 1}`;
+    if (i === 0) {
+      a.classList.add('active');
+    }
+    li.appendChild(a);
+    ul.appendChild(li);
+  }
+  div.appendChild(ul);
+
+  // Event Listener Loop for navigation
+  for (let i = 0; i < navs.length; i++) {
+    navs[i].addEventListener('click', (e) => {
+      const newPage = e.target.textContent;
+      for (let i = 0; i < navs.length; i++) {
+        navs[i].classList.remove('active');
+      }
+      e.target.classList.add('active');
+      showPage(studentItems, newPage);
+    });
+  }
+}
+
+/**
  *  - A function to dynamically create the search bar
  */
 function appendSearch() {
@@ -88,19 +129,35 @@ function appendSearch() {
 
 function inputListen() {
   const input = document.querySelector('input');
+  const container = document.querySelector('.student-list');
+  const div = document.createElement('div');
+  div.style.display = 'none';
+  const h3 = document.createElement('h3');
+  h3.innerHTML = 'That search returned zero results...';
+  div.appendChild(h3);
+  container.appendChild(div);
 
   input.addEventListener('keyup', (e) => {
-    if (e.keyCode === 13) {
-      for (let i = 0; i < studentItems.length; i++) {
-        const name = studentItems[i].firstChild.nextSibling.textContent;
-        if (name.includes(input.value)) {
-          studentItems[i].style.display = 'block';
-        } else {
-          studentItems[i].style.display = 'none';
-        }
+    for (let i = 0; i < studentItems.length; i++) {
+      const name =
+        studentItems[i].firstElementChild.firstElementChild.nextElementSibling
+          .innerHTML;
+      if (name.includes(input.value)) {
+        studentItems[i].style.display = 'block';
+      } else {
+        studentItems[i].style.display = 'none';
       }
-    } else if (name.includes(input.value)) {
-      console.log('nailed it');
+    }
+
+    const studentItemsFiltered = studentItems.filter(
+      (student) => student.style.display == 'block'
+    );
+
+    showPage(studentItemsFiltered, 1);
+    upatePageLinks(studentItemsFiltered);
+
+    if (studentItemsFiltered.length === 0) {
+      div.style.display = 'block';
     }
   });
 }
