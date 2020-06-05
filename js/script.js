@@ -124,7 +124,7 @@ function appendSearch() {
   inputListen();
 }
 
-// Seearch functionality
+// Search functionality
 
 function inputListen() {
   const input = document.querySelector('input');
@@ -157,6 +157,8 @@ function inputListen() {
 
     if (studentItemsFiltered.length === 0) {
       div.style.display = 'block';
+    } else {
+      div.style.display = 'none';
     }
   });
 }
