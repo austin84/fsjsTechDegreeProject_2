@@ -69,13 +69,12 @@ function appendPageLinks(list) {
 
 /**
  *
- * @param {Array} list - List of Students in the form of an array
- *  - A function to dynamically create the pagination navigation
+ * @param {Array} list - Filtered List of Students in the form of an array that is only {display:block;} students
+ *  - A function to update the pagination navigation after a search
  */
 function upatePageLinks(list) {
   const div = document.querySelector('.pagination');
   div.innerHTML = '';
-  console.log(div);
   const ul = document.createElement('ul');
   const pagesRequired = Math.ceil(list.length / toShow);
   const navs = document.getElementsByClassName('nav');
@@ -161,10 +160,6 @@ function inputListen() {
     }
   });
 }
-
-// ! ^^^^^^^   Currently Working Above ^^^^^^^^^^^^^
-
-// ! trying to implement eventlisteners, strugggling to traverse directly to the name, but email should be okay too
 
 // Call Functions to show the paginated list and add the navigation
 
